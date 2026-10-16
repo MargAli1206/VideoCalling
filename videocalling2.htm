@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Custom Video System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 20px;
+        }
+
+        video {
+            width: 100%;
+            max-width: 700px;
+            background: #111;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin: 10px 5px 10px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>My Custom Live Video</h2>
+
+    <video id="localVideo" autoplay muted playsinline></video>
+
+    <br>
+
+    <button onclick="startCamera()">Start Camera</button>
+    <button onclick="stopCamera()">Stop Camera</button>
+
+    <script>
+        let localStream = null;
+
+        async function startCamera() {
+            try {
+                localStream =
+                    await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: true
+                    });
+
+                document.getElementById("localVideo").srcObject =
+                    localStream;
+
+            } catch (error) {
+                alert("Camera access failed: " + error.message);
+            }
+        }
+
+        function stopCamera() {
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                localStream = null;
+            }
+
+            document.getElementById("localVideo").srcObject = null;
+        }
+    </script>
+
+</body>
+</html>
